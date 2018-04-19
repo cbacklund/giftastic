@@ -18,7 +18,7 @@ $(document).ready(function () {
 
             var butt = $("<button>");
 
-            butt.addClass("btn btn-info text-light m-2");
+            butt.addClass("btn btn-info text-light btnGif m-2");
             butt.attr("data-name", topics[i]);
             butt.text(topics[i]);
             $("#buttonRange").append(butt);
@@ -29,10 +29,13 @@ $(document).ready(function () {
 
 
     // create the ajax magic when a topic button is clicked
-    $("#buttonRange").on("click", function (event) {
+    $(".btnGif").on("click", function (event) {
+        var gifpic = $(this).text();
 
+        var queryUrl = URL + gifpic + "&api_key=" + apiKey; 
 
-        var queryUrl = URL + // create the api key and query string here
+        console.log(gifpic);
+        console.log(queryUrl);
 
             $.ajax({
                 url: queryUrl,
@@ -61,8 +64,6 @@ $(document).ready(function () {
         var newStuff = $("#exampleTopic").val().trim();
         topics.push(newStuff);
         createButtons();
-
-        console.log("funn");
     });
 
 
