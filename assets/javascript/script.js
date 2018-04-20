@@ -2,7 +2,7 @@ var topics = ["Cats", "Dogs", "Dancing", "Pigs", "Turtles", "Eagles"];
 var apiKey = "7GOfzgZSUZPT7pHGGFd4f2HzXB5ybe3D";
 var URL = "http://api.giphy.com/v1/gifs/search?q=" //"funny+cat&api_key=YOUR_API_KEY"
 var limit = "&limit=10";
-var rating = "&rating=pg&rating=g";
+var rating = "&rating=pg";
 
 
 // time to get this whole thing started
@@ -30,6 +30,7 @@ $(document).ready(function () {
 
     // create the ajax magic when a topic button is clicked
     $(".btnGif").on("click", function (event) {
+        $("#giphypop").empty();
         var gifpic = $(this).text();
 
         var queryUrl = URL + gifpic + "&api_key=" + apiKey + limit + rating; 
@@ -48,13 +49,14 @@ $(document).ready(function () {
                 for (var j = 0; j < gifObject.length; j++) {
                 // creating a div to hold the rating text and the gif image
                 var gifDiv = $("<div>");
+                gifDiv.addClass("display", "inline-block");
                 // pulling the rating and appending it to the div
-                var rating = gifObject.rating[j];
-                var rateText = $("<h2>").text("Rating:" + rating); 
+                var rating = gifObject[j].rating.toUpperCase();
+                var rateText = $("<h2>").text("Rating: " + rating); 
                 gifDiv.append(rateText); 
                 // pulling the image url and appending it to the div
                 var gifs = $("<img>");
-                var imgURLstill = gifObject.images.fixed_height_small_still[j];
+                var imgURLstill = gifObject[j].images.original.url;
                 gifs.attr("src", imgURLstill);
                 gifDiv.append(gifs);
 
