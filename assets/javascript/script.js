@@ -1,8 +1,8 @@
 var topics = ["Cats", "Dogs", "Dancing", "Pigs", "Turtles", "Eagles"];
 var apiKey = "7GOfzgZSUZPT7pHGGFd4f2HzXB5ybe3D";
 var URL = "http://api.giphy.com/v1/gifs/search?q=" //"funny+cat&api_key=YOUR_API_KEY"
-var limit = "";
-var rating = "";
+var limit = "&limit=10";
+var rating = "&rating=pg&rating=g";
 
 
 // time to get this whole thing started
@@ -32,32 +32,41 @@ $(document).ready(function () {
     $(".btnGif").on("click", function (event) {
         var gifpic = $(this).text();
 
-        var queryUrl = URL + gifpic + "&api_key=" + apiKey; 
+        var queryUrl = URL + gifpic + "&api_key=" + apiKey + limit + rating; 
 
-        console.log(gifpic);
         console.log(queryUrl);
 
             $.ajax({
                 url: queryUrl,
                 method: "GET"
             }).then(function (response) {
+                var gifObject = response.data
 
+                console.log(gifObject);
+                
+                // looping through the 10 items in the response object to create the images
+                for (var j = 0; j < gifObject.length; j++) {
+                // creating a div to hold the rating text and the gif image
                 var gifDiv = $("<div>");
-
-                var rating = response
-                var rateText = $("<h2>").text("Rating:" + rating); // creating the text for the rating for each gif
-                gifDiv.append(rateText); // attaching the rating text to the div
-
-                var imgURLstill = response
+                // pulling the rating and appending it to the div
+                var rating = gifObject.rating[j];
+                var rateText = $("<h2>").text("Rating:" + rating); 
+                gifDiv.append(rateText); 
+                // pulling the image url and appending it to the div
                 var gifs = $("<img>");
+                var imgURLstill = gifObject.images.fixed_height_small_still[j];
+                gifs.attr("src", imgURLstill);
+                gifDiv.append(gifs);
 
-                gifs.attr();
+                $("#giphypop").append(gifDiv);
 
-                $("#giphypop").append(gifs);
+                } // closing out the for loop
 
             }) // response function close out
 
     }); // buttonRange on click close out
+
+    // input field and submit button to add the topic to the array
     $("#gifButton").on("click", function (event) {
         event.preventDefault();
 
