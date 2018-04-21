@@ -1,6 +1,6 @@
 var topics = ["Cats", "Dogs", "Dancing", "Pigs", "Turtles", "Eagles"];
 var apiKey = "7GOfzgZSUZPT7pHGGFd4f2HzXB5ybe3D";
-var URL = "http://api.giphy.com/v1/gifs/search?q=" //"funny+cat&api_key=YOUR_API_KEY"
+var URL = "http://api.giphy.com/v1/gifs/search?q=" 
 var limit = "&limit=10";
 var rating = "&rating=pg";
 
@@ -49,16 +49,25 @@ $(document).ready(function () {
                 for (var j = 0; j < gifObject.length; j++) {
                 // creating a div to hold the rating text and the gif image
                 var gifDiv = $("<div>");
-                gifDiv.addClass("display", "inline-block");
+                gifDiv.css("display", "inline-block");
                 // pulling the rating and appending it to the div
                 var rating = gifObject[j].rating.toUpperCase();
-                var rateText = $("<h2>").text("Rating: " + rating); 
+                var rateText = $("<h4>").text("Rating: " + rating); 
+                rateText.addClass("ml-3")
                 gifDiv.append(rateText); 
                 // pulling the image url and appending it to the div
                 var gifs = $("<img>");
-                var imgURLstill = gifObject[j].images.original.url;
+                var imgURLstill = gifObject[j].images.fixed_height_small_still.url;
+                var imgURLanimate = gifObject[j].images.fixed_height_small.url;
+                gifs.attr("data-state", "still")
+                gifs.attr("data-still", imgURLstill);
+                gifs.attr("data-animate", imgURLanimate);
                 gifs.attr("src", imgURLstill);
+                gifs.addClass("gifClass m-3");
                 gifDiv.append(gifs);
+
+                console.log(imgURLstill);
+                console.log(imgURLanimate);
 
                 $("#giphypop").append(gifDiv);
 
@@ -77,13 +86,24 @@ $(document).ready(function () {
         createButtons();
     });
 
+    $(".gifClass").on("click", function() {
+
+        var state = $(this).attr("data-state");
+
+        console.log(state);
+        
+        if (state === "still") {
+          $(this).attr("src", imgURLanimate);
+          $(this).attr("data-state", "animate");
+        } else {
+          $(this).attr("src", imgURLstill);
+          $(this).attr("data-state", "still");
+        }
+      });
+
 
 }); // document ready close out
 
-
-
-console.log(topics[1]);
-console.log(topics[3]);
 
 
 
